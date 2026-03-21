@@ -97,7 +97,7 @@ fn test_many_election_2a() {
     cfg.check_one_leader();
 
     let mut random = rand::thread_rng();
-    for _ in 0..iters {
+    for i in 0..iters {
         // disconnect three nodes
         let i1 = random.gen::<usize>() % servers;
         let i2 = random.gen::<usize>() % servers;
@@ -109,10 +109,12 @@ fn test_many_election_2a() {
         // either the current leader should still be alive,
         // or the remaining four should elect a new one.
         cfg.check_one_leader();
+        info!("{} passed disconnect\n", i);
 
         cfg.connect(i1);
         cfg.connect(i2);
         cfg.connect(i3);
+        info!("{} passed reconnect\n", i);
     }
 
     cfg.check_one_leader();
